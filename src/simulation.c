@@ -9,8 +9,8 @@ static uint8_t initialized = 0;
 static uint8_t paused = 0;
 
 void simulation_init() {
-    spawn_circle((Vector2){640 / 2, 300}, 25.0f, 100);
-    spawn_circle((Vector2){400, 300}, 10.0f, 50);
+    spawn_circle((Vector2){640 / 2, 300}, 25.0f, 100, (Color4f){1.0f, 0.0f, 0.0f, 1.0f}, 1, 1);
+    spawn_circle((Vector2){400, 300}, 10.0f, 50, (Color4f){0.0f, 1.0f, 0.0f, 1.0f}, 1, 1);
 }
 
 void main_loop(float dt) {
@@ -33,30 +33,30 @@ void main_loop(float dt) {
     accumulator += dt;
     while (accumulator >= physics_dt && steps < 5 && !paused) {
         // Update physics ONCE per timestamp
-        for (uint16_t i = 0; i < entity_count; i++)
+        for (uint16_t id = 0; id < entity_count; id++)
         {
-            Entity *e = &entities[i];
-            e->velocity.y += Gravity * physics_dt;
-            e->position.y += e->velocity.y * physics_dt;
+            Entity *e = &entities[id];
+            velocities[id].y += Gravity * physics_dt;
+            positions[id].y += velocities[id].y * physics_dt;
 
-            if (e->position.y < 0) {
-                e->position.y = 0;
-                e->velocity.y *= -0.8f;
+            if (positions[id].y < 0) {
+                positions[id].y = 0;
+                velocities[id].y *= -0.8f;
             }
 
-            if (e->position.y > height) {
-                e->position.y = height;
-                e->velocity.y *= -0.8f;
+            if (positions[id].y > height) {
+                positions[id].y = height;
+                velocities[id].y *= -0.8f;
             }
 
-            if (e->position.x < 0) {
-                e->position.x = 0;
-                e->velocity.x *= -0.8f;
+            if (positions[id].x < 0) {
+                positions[id].x = 0;
+                velocities[id].x *= -0.8f;
             }
 
-            if (e->position.x > width) {
-                e->position.x = width;
-                e->velocity.x *= -0.8f;
+            if (positions[id].x > width) {
+                positions[id].x = width;
+                velocities[id].x *= -0.8f;
             }
 
                 // printf("Entity: %d — Position Y: %f\n", e->id, e->position.y);
@@ -68,15 +68,15 @@ void main_loop(float dt) {
     /*
         Render Entities
     */
-    for (uint16_t i = 0; i < entity_count; i++) {
-        Entity *e = &entities[i];
+    for (uint16_t id = 0; id < entity_count; id++) {
+        Entity *e = &entities[id];
 
-        if (e->shape == SHAPE_CIRCLE) {
-            Circle c;
-            c.pos = e->position;
-            c.radius = 25.0f;
-            c.segments = 50;
-            circle_test(c);
+        if (shapeTypes[id] == SHAPE_CIRCLE) {
+            // Circle c;
+            // c.pos = e->position;
+            // c.radius = 25.0f;
+            // c.segments = 50;
+            // circle_test(c);
         }
     }
 }

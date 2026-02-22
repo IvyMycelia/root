@@ -2,7 +2,8 @@
 #define SIMULATION_H
 
 #include "types.h"
-#include "world.h"
+#include "entity.h"
+#include "globals.h"
 
 #include <stdio.h>
 

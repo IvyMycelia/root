@@ -2,6 +2,8 @@
 #define DRAW_H
 
 #include "types.h"
-void circle_test(Circle c);
+#include "globals.h"
+
+// void circle_test(Circle c);
 
 #endif
